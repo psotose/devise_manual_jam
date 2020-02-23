@@ -1,10 +1,10 @@
 class StoriesController < ApplicationController
   before_action :set_story, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:index]
   # GET /stories
   # GET /stories.json
   def index
-    @stories = current_user.stories
+    @stories = Story.all
   end
 
   # GET /stories/1
@@ -24,7 +24,7 @@ class StoriesController < ApplicationController
   # POST /stories
   # POST /stories.json
   def create
-    @story = Story.new(story_params)
+    @story = Story.new(story_params.merge(user:current_user))
     @story.user = current_user
     respond_to do |format|
       if @story.save
@@ -54,10 +54,12 @@ class StoriesController < ApplicationController
   # DELETE /stories/1
   # DELETE /stories/1.json
   def destroy
-    @story.destroy
-    respond_to do |format|
-      format.html { redirect_to stories_url, notice: 'Story was successfully destroyed.' }
-      format.json { head :no_content }
+    if current_user.admin? || @story.user == current_user
+      @story.destroy
+      respond_to do |format|
+        format.html { redirect_to stories_url, notice: 'Story was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 
