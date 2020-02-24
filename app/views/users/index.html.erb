@@ -1,6 +1,23 @@
 
-<% @users.each do |user| %>
-  <%= user.username %><br/>
-  <%= user.email %><br/>
-  <%= user.admin %><br/>
-<% end %>
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Username</th>
+      <th scope="col">email</th>
+      <th scope="col">Admin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.username %><br/></td>
+        <td><%= user.email %><br/></td>
+        <td><%= user.admin %><br/></td>
+        <td><%= link_to "Admin", user_type_path(user), class: 'btn btn-info' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+  
