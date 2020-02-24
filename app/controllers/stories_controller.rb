@@ -1,10 +1,10 @@
 class StoriesController < ApplicationController
   before_action :set_story, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: [:index, :show]
   # GET /stories
   # GET /stories.json
   def index
-    @stories = Story.all
+    @stories = current_user.stories
   end
 
   # GET /stories/1
@@ -63,6 +63,8 @@ class StoriesController < ApplicationController
     end
   end
 
+ 
+   
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_story
